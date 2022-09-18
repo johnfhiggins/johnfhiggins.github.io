@@ -4,7 +4,8 @@ body {
     background: #ece6de;
 }
 nav ul, footer ul {
-    font-family:'Helvetica', 'Arial', 'Sans-Serif';
+    /*font-family:'Helvetica', 'Arial', 'Sans-Serif';*/
+    font-family: 'Playfair Display', serif;
     padding: 0px;
     list-style: none;
     font-weight: bold;
