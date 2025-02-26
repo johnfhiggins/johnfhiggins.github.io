@@ -234,6 +234,8 @@ exclude:
   - _pages/profiles.md
   - _pages/repositories.md
   - _posts/
+  - _pages/projects.md
+  - _pages/publications.md
   - _projects/?_project.md
   - bin/
   - CONTRIBUTING.md
