@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Higgins - Economist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --text-accent: #008B8B;
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0efe8;
+            --border: #d4d3c8;
+            --link: #2c5f7c;
+            --link-hover: #1a3d50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Top bar */
+        .topbar-wrap {
+            position: sticky;
+            top: 0;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 2rem;
+            position: relative;
+        }
+
+        .topbar-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: none;
+        }
+
+        .topbar-name:hover {
+            color: var(--text-accent);
+            border-bottom-color: transparent;
+        }
+
+        .topbar-nav {
+            display: flex;
+            align-items: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .topbar-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 2rem;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        .topbar-nav a.cv-link {
+            color: var(--text-accent);
+            font-weight: 500;
+        }
+
+        .topbar-nav a:hover {
+            color: var(--text-accent);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            line-height: 1;
+        }
+
+        /* Header / intro */
+        header {
+            padding: 3.5rem 0;
+            margin-bottom: 4rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .intro-layout {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+        }
+
+        .intro-left {
+            flex: 0 0 260px;
+        }
+
+        .headshot {
+            width: 260px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            box-shadow: 6px 6px 0 var(--bg-secondary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .tagline {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 0.01em;
+            line-height: 1.4;
+        }
+
+        .intro-right {
+            flex: 1;
+        }
+
+        .about-content {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-left: 3px solid var(--text-accent);
+        }
+
+        .details-list {
+            margin-top: 1.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .details-list div {
+            margin-bottom: 0.5rem;
+        }
+
+        .details-label {
+            color: var(--text-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-right: 0.5rem;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 5rem;
+            animation: fadeIn 0.8s ease-out;
+            animation-fill-mode: both;
+            scroll-margin-top: 90px;   /* ← this line */
+        }
+
+        section:nth-child(2) { animation-delay: 0.1s; }
+        section:nth-child(3) { animation-delay: 0.2s; }
+        section:nth-child(4) { animation-delay: 0.3s; }
+        section:nth-child(5) { animation-delay: 0.4s; }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-accent);
+            letter-spacing: -0.01em;
+            font-family: 'IBM Plex Mono', monospace;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* Research items */
+        .research-item {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .research-item:last-child {
+            border-bottom: none;
+        }
+
+        .research-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .research-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        /* Publications list */
+        .publication-list {
+            list-style: none;
+        }
+
+        .publication-list li {
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .publication-list li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--text-accent);
+            font-size: 1.2rem;
+        }
+
+        /* Contact */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .contact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-value {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        /* Links */
+        a {
+            color: var(--link);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            border-bottom-color: var(--link-hover);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 5rem;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .topbar-nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.5rem 2rem 1.25rem;
+            }
+
+            .topbar-nav.open {
+                display: flex;
+            }
+
+            .topbar-nav a {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .intro-layout {
+                flex-direction: column;
+            }
+
+            .intro-left {
+                flex: none;
+                width: 100%;
+            }
+
+            .headshot {
+                width: 160px;
+                height: 160px;
+            }
+
+            .about-content {
+                padding: 1.5rem;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar-wrap">
+        <div class="container topbar">
+            <a href="#top" class="topbar-name">John Higgins</a>
+            <nav class="topbar-nav" id="topbarNav">
+                <a href="cv.pdf" class="cv-link">CV</a>
+                <a href="#research">Research</a>
+                <a href="#publications">Publications</a>
+                <a href="#teaching">Teaching</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header id="top">
+            <div class="intro-layout">
+                <div class="intro-left">
+                    <img src="headshot.jpg" alt="Photo of John Higgins" class="headshot">
+                    <h1>John Higgins</h1>
+                    <p class="tagline">Job Market Candidate</p>
+                    <p class="tagline">University of Wisconsin-Madison</p>
+                </div>
+                <div class="intro-right">
+                    <div class="about-content">
+                        <p>
+                            I am a PhD candidate in Economics at the University of Wisconsin-Madison. My research interests include industrial organization, applied microeconomics, electric vehicles, and electricity markets. 
+                        </p>
+                        <p>
+                            I will be on the 2026-2027 job market. You can find my CV here.
+                        </p>
+                        <p>
+                            Feel free to contact me at <a href="mailto:jfhiggins@wisc.edu">jfhiggins@wisc.edu</a>.
+                        </p>
+                    </div>
+                    
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="research">
+                <h2>Research</h2>
+
+                <div class="research-item">
+                    <div class="research-title">Price Discrimination in Electric Vehicle Fast Charging</div>
+                    <div class="research-meta">Job Market Paper</div>
+                    <p>
+                        This paper develops a structural demand model for electric vehicle charging services in Europe, incorporating consumer heterogeneity through nested logit specifications with random coefficients. Using detailed transaction-level data, I estimate price elasticities and simulate counterfactual pricing strategies for charging point operators.
+                    </p>
+                </div>
+                
+
+                <div class="research-item">
+                    <div class="research-title">Computational Methods for Mortgage Cashflow Simulation</div>
+                    <div class="research-meta">Work in Progress</div>
+                    <!--<p>
+                        I develop a Monte Carlo framework for simulating mortgage-backed securities cashflows under stochastic interest rate environments. The model incorporates prepayment and default behavior to value agency MBS across different rate scenarios, implemented using high-performance computing infrastructure.
+                    </p> -->
+                </div>
+                <div class="research-item">
+                    <div class="research-title">Platform Switching Policies Under Collusion: Unintended Consequences for Digital Platforms (with Christopher Sullivan, Lorenzo Magnolfi, and Dan Quint)</div>
+                    <div class="research-meta">Working Paper</div>
+                   
+                </div>
+                <div class="research-item">
+                    <div class="research-title">Baseload Production and Electricity Price Variation (with Jack Collison)</div>
+                    <div class="research-meta">Work in progress</div>
+                </div>
+            </section>
+            
+            <section id="publications">
+                <h2>Publications</h2>
+                <ul class="publication-list">
+                    <li>
+                        <strong>Control and Spread of Contagion in Networks With Global Effects</strong> (with Tarun Sabarwal). <em>Journal of Public Economic Theory</em>, 2023.
+                    </li>
+                </ul>
+            </section>
+
+            <section id="teaching">
+                <h2>Teaching</h2>
+                <h3>Instructor</h3>
+                <p>Computational Economics Bootcamp (Summer 2024, 2025)</p>
+
+                <h3>Teaching Assistant</h3>
+                
+                <p>ECON 301: Intermediate Microeconomic Theory (Fall 2022) </p>
+                <p>ECON 410: Introductory to Econometrics (Spring 2023)</p>
+
+                <h3>Guest Lecturer</h3>
+                <p>ECON 899: Machine Learning & AI in Economics (Fall 2024)</p>
+            </section>
+
+            <section id="contact">
+                <h2>Contact</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-label">Email</div>
+                        <div class="contact-value"><a href="mailto:jfhiggins@wisc.edu">jfhiggins@wisc.edu</a></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Office</div>
+                        <div class="contact-value">Sewell 7308<br>Department of Economics<br>University of Wisconsin-Madison</div>
+                    </div>
+                    <!--<div class="contact-item">
+                        <div class="contact-label">Links</div>
+                        <div class="contact-value">
+                            <a href="#">CV (PDF)</a><br>
+                            <a href="#">Google Scholar</a><br>
+                            <a href="#">GitHub</a>
+                        </div>
+                    </div> -->
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; Last updated: July 2026.</p>
+        </footer>
+    </div>
+
+    <script>
+        const navToggle = document.getElementById('navToggle');
+        const topbarNav = document.getElementById('topbarNav');
+        navToggle.addEventListener('click', () => {
+            const isOpen = topbarNav.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', isOpen);
+        });
+        topbarNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                topbarNav.classList.remove('open');
+                navToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    </script>
+</body>
+</html>
