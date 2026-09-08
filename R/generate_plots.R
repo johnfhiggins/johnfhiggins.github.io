@@ -46,7 +46,8 @@ ggsave(
   file.path(out_dir, "cumul_postings.svg"),
   plot = g,
   width = 8, height = 5,
-  device = svglite::svglite
+  device = svglite::svglite,
+  system_fonts = list(sans = "Helvetica")
 )
 
 full_data_cumul_type <- full_data[,.N, by=c("joe_issue_ID","day_of_cycle","jp_section")][order(day_of_cycle)][,N_cumul := cumsum(N), by=c("joe_issue_ID","jp_section")]
@@ -62,7 +63,7 @@ for (section_f in sections){
     xlab("Day of cycle") + ylab("Cumulative postings") + scale_color_discrete(name="Cycle Year")+ ggtitle(label="Cumulative postings by day of cycle", subtitle=section_f) + theme_bw(base_family="sans")
   
   print(g)  
-  ggsave(file.path(out_dir, paste("cumul_", to_any_case(section_f, case = "snake"),".svg", sep='')),, plot=g,device=svglite::svglite,height=5,width=8)
+  ggsave(file.path(out_dir, paste("cumul_", to_any_case(section_f, case = "snake"),".svg", sep='')),, plot=g,device=svglite::svglite,height=5,width=8, system_fonts = list(sans = "Helvetica"))
 }
 
 
