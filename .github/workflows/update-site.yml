@@ -1,0 +1,51 @@
+name: Update JOE listings site
+
+on:
+  schedule:
+    # Runs daily at 13:00 UTC (~8am Central). Adjust cadence as needed —
+    # JOE listings don't change that often intra-day, so once or twice a
+    # day is usually plenty.
+    - cron: "0 13 * * *"
+  workflow_dispatch: {}   # lets you trigger a manual run from the Actions tab
+  push:
+    branches: [main]
+    paths:
+      - "R/**"
+      - ".github/workflows/update-site.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.4.0"
+
+      - name: Cache R packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: r-pkgs-${{ hashFiles('R/generate_plots.R') }}
+
+      - name: Install R dependencies
+        run: |
+          Rscript -e 'install.packages(c("ggplot2", "data.table", "lubridate","snakecase","stringr","svglite"))'
+
+      - name: Run scrape + plot generation
+        run: Rscript R/generate_plots.R
+
+      - name: Commit updated plots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add joe-listings/plots
+          git add joe-jistings/data
+          git diff --quiet --cached || git commit -m "Auto-update JOE plots [skip ci]"
+          git push
