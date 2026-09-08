@@ -55,7 +55,7 @@ sections <- unique(full_data_cumul_type$jp_section)
 job_type_files <- lapply(sections, to_any_case, case="snake")
 for (section_f in sections){
   g <- ggplot() + geom_step(data=full_data_cumul_type[current_yr==0 & day_of_cycle < cutoff & jp_section==section_f], aes(x=day_of_cycle, y=N_cumul, col=as.factor(`Cycle Year`)),alpha=0.5, linetype=2) + 
-    geom_step(data=full_data_cumul_type[current_yr==1 & day_of_cycle < cutoff & jp_section ==section_f], aes(x=day_of_cycle, y=N_cumul, col=as.factor(`Cycle Year`)), alpha=1) + theme_bw() + 
+    geom_step(data=full_data_cumul_type[current_yr==1 & day_of_cycle < cutoff & jp_section ==section_f], aes(x=day_of_cycle, y=N_cumul, col=as.factor(`Cycle Year`)), alpha=1)  + 
     xlab("Day of cycle") + ylab("Cumulative postings") + scale_color_discrete(name="Cycle Year")+ ggtitle(label="Cumulative postings by day of cycle", subtitle=section_f)
   
   print(g)  
