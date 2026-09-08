@@ -2,11 +2,9 @@ name: Update JOE listings site
 
 on:
   schedule:
-    # Runs daily at 13:00 UTC (~8am Central). Adjust cadence as needed —
-    # JOE listings don't change that often intra-day, so once or twice a
-    # day is usually plenty.
+    # Runs daily at 13:00 UTC (~8am Central)
     - cron: "0 13 * * *"
-  workflow_dispatch: {}   # lets you trigger a manual run from the Actions tab
+  workflow_dispatch: {}   
   push:
     branches: [main]
     paths:
