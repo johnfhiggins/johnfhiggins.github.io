@@ -11,7 +11,8 @@ library(snakecase)
 library(stringr)
 library(svglite)
 library(readxl)
-theme_set(theme_minimal(base_family = "sans"))
+library(ragg)
+theme_set(theme_bw(base_family = "Liberation Sans"))
 
 dest_file <- tempfile(fileext = ".xlsx")
 file_url <- "https://www.aeaweb.org/joe/resultset_xls_output.php?mode=xls_xml&q=eNplj0EKwkAMRe-SdYXShYseQBC8Q5jOxBqdZiCZVkrp3R2REcFd8v5P-H-DC1tmGU9JXCfoN2BB5zMvBL3MMTbwoPWZNKCRU3-r1KiYktT1TrGObDaXY-ja7nhoO2ggKY8sLp7_FJ9mybqi0vjzzNxCAa8pBlKr0DsJHFxcJjSvbhriN6CSXCfJmCSuFcVPXCfDEpwUh1wilGKF5fmdGh3s-wuYbliD"
@@ -39,7 +40,7 @@ full_data_cumul[,`Cycle Year` := as.factor(str_split_i(joe_issue_ID, "-",1))]
 cutoff <- 100
 
 g <- ggplot() + geom_step(data=full_data_cumul[current_yr==0 & day_of_cycle < cutoff ], aes(x=day_of_cycle, y=N_cumul, col=`Cycle Year`),alpha=0.5, linetype=2) + 
-  geom_step(data=full_data_cumul[current_yr==1 & day_of_cycle < cutoff ], aes(x=day_of_cycle, y=N_cumul, col=`Cycle Year`), alpha=1) + theme_bw() + 
+  geom_step(data=full_data_cumul[current_yr==1 & day_of_cycle < cutoff ], aes(x=day_of_cycle, y=N_cumul, col=`Cycle Year`), alpha=1)  + 
   xlab("Day of cycle") + ylab("Cumulative postings") + scale_color_discrete(name="Cycle Year")+ ggtitle(label="Cumulative postings by day of cycle", subtitle="All position categories")
 print(g)  
 ggsave(file.path(out_dir, "cumul_postings.svg"),device="svg", height=5,width=8)
