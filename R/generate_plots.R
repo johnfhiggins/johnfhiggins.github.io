@@ -11,6 +11,7 @@ library(snakecase)
 library(stringr)
 library(svglite)
 library(readxl)
+theme_set(theme_minimal(base_family = "sans"))
 
 dest_file <- tempfile(fileext = ".xlsx")
 file_url <- "https://www.aeaweb.org/joe/resultset_xls_output.php?mode=xls_xml&q=eNplj0EKwkAMRe-SdYXShYseQBC8Q5jOxBqdZiCZVkrp3R2REcFd8v5P-H-DC1tmGU9JXCfoN2BB5zMvBL3MMTbwoPWZNKCRU3-r1KiYktT1TrGObDaXY-ja7nhoO2ggKY8sLp7_FJ9mybqi0vjzzNxCAa8pBlKr0DsJHFxcJjSvbhriN6CSXCfJmCSuFcVPXCfDEpwUh1wilGKF5fmdGh3s-wuYbliD"
