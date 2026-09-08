@@ -10,6 +10,7 @@ library(lubridate)
 library(snakecase)
 library(stringr)
 library(svglite)
+library(ragg)
 library(readxl)
 
 dest_file <- tempfile(fileext = ".xlsx")
@@ -43,11 +44,11 @@ g <- ggplot() + geom_step(data=full_data_cumul[current_yr==0 & day_of_cycle < cu
 print(g)  
 #ggsave(,device="svg", height=5,width=8)
 ggsave(
-  file.path(out_dir, "cumul_postings.svg"),
+  file.path(out_dir, "cumul_postings.png"),
   plot = g,
   width = 8, height = 5,
-  device = svglite::svglite,
-  system_fonts = list(sans = "Helvetica")
+  device = ragg::agg_png,
+  dpi=300
 )
 
 full_data_cumul_type <- full_data[,.N, by=c("joe_issue_ID","day_of_cycle","jp_section")][order(day_of_cycle)][,N_cumul := cumsum(N), by=c("joe_issue_ID","jp_section")]
@@ -63,7 +64,7 @@ for (section_f in sections){
     xlab("Day of cycle") + ylab("Cumulative postings") + scale_color_discrete(name="Cycle Year")+ ggtitle(label="Cumulative postings by day of cycle", subtitle=section_f) + theme_bw(base_family="sans")
   
   print(g)  
-  ggsave(file.path(out_dir, paste("cumul_", to_any_case(section_f, case = "snake"),".svg", sep='')),, plot=g,device=svglite::svglite,height=5,width=8, system_fonts = list(sans = "Helvetica"))
+  ggsave(file.path(out_dir, paste("cumul_", to_any_case(section_f, case = "snake"),".png", sep='')),, plot=g,device=ragg::agg_png,height=5,width=8,dpi=300)
 }
 
 
