@@ -2,9 +2,9 @@ name: Update JOE listings site
 
 on:
   schedule:
-    # Runs daily at 13:00 UTC (~8am Central)
-    - cron: "0 13 * * *"
-  workflow_dispatch: {}   
+    # Runs every 4 hours
+    - cron: "30 */4 * * *"
+  workflow_dispatch: 
   push:
     branches: [main]
     paths:
