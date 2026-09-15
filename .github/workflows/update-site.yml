@@ -59,8 +59,3 @@ jobs:
           sed -e 's/<img src="//' |
           xargs -I % curl -sX PURGE "%"
 
-          curl -s "https://api.github.com/repos/${GITHUB_REPOSITORY}/contents/joe-listings/plots/last_updated.txt" \
-            | grep '"content"' \
-            | sed 's/.*"content": "//;s/".*//' \
-            | tr -d '\n' \
-            | base64 -d
