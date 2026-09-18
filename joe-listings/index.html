@@ -3,119 +3,249 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JOE Listings — Cumulative Postings by Day of Cycle</title>
+<title>JOE Listings Tracker — John Higgins</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #fafafa;
-    --card-bg: #ffffff;
-    --border: #e0e0e0;
-    --text: #222;
-    --muted: #666;
-    --accent: #1f4e79;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-accent: #008B8B;
+    --bg-primary: #fafaf8;
+    --bg-secondary: #f0efe8;
+    --border: #d4d3c8;
+    --link: #2c5f7c;
+    --link-hover: #1a3d50;
   }
-  * { box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+
+  * {
     margin: 0;
-    padding: 2rem 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 0;
+    box-sizing: border-box;
   }
+
+  body {
+    font-family: 'Crimson Pro', serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 18px;
+  }
+
   .container {
-    width: 100%;
     max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
   }
+
+  .topbar-wrap {
+    position: sticky;
+    top: 0;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+  }
+
+  .topbar-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  .topbar-name:hover {
+    color: var(--text-accent);
+  }
+
+  .topbar-nav {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+
+  .topbar-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+  }
+
+  .topbar-nav a:hover {
+    color: var(--text-accent);
+  }
+
+  header {
+    padding: 3rem 0 1rem;
+  }
+
   h1 {
-    font-size: 1.5rem;
-    margin-bottom: 0.25rem;
-    color: var(--accent);
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
   }
+
   .subtitle {
-    color: var(--muted);
-    margin-bottom: 1.5rem;
-    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    margin-bottom: 2rem;
   }
+
+  h2.section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--text-accent);
+    margin-bottom: 1rem;
+  }
+
   .controls {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
   }
+
   label {
-    font-weight: 600;
-    font-size: 0.95rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
+
   select {
+    font-family: 'Crimson Pro', serif;
     font-size: 1rem;
-    padding: 0.45rem 0.75rem;
-    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
     border: 1px solid var(--border);
-    background: var(--card-bg);
-    min-width: 220px;
+    background: #ffffff;
+    color: var(--text-primary);
+    min-width: 260px;
   }
+
+  select:focus {
+    outline: none;
+    border-color: var(--text-accent);
+  }
+
   .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--text-accent);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
   }
+
   .card img {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 6px;
+    border-radius: 4px;
+    background: #fff;
   }
+
   .meta {
     display: flex;
     justify-content: space-between;
-    color: var(--muted);
-    font-size: 0.8rem;
-    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    margin-top: 1rem;
   }
+
   #last-updated {
-    font-style: italic;
+    font-style: normal;
   }
-  .missing {
-    padding: 3rem 1rem;
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    margin-top: 3rem;
     text-align: center;
-    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  footer a {
+    color: var(--link);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  footer a:hover {
+    color: var(--link-hover);
+    border-bottom-color: var(--link-hover);
+  }
+
+  @media (max-width: 768px) {
+    select {
+      min-width: 100%;
+    }
   }
 </style>
 </head>
 <body>
+<div class="topbar-wrap">
+  <div class="container topbar">
+    <a href="../index.html" class="topbar-name">John Higgins</a>
+    <nav class="topbar-nav">
+      <a href="../index.html#top">Back to site</a>
+    </nav>
+  </div>
+</div>
+
 <div class="container">
-  <h1>JOE Listings: Cumulative Postings by Day of Cycle</h1>
-  <p class="subtitle">Data obtained from the AEA JOE listings page. Updated automatically.</p>
+  <header>
+    <h1>JOE Listings Tracker</h1>
+    <p class="subtitle">Cumulative postings by day of cycle, from the AEA's Job Openings for Economists board. Updated automatically.</p>
+  </header>
 
-  <div class="controls">
-    <label for="plot-select">View:</label>
-    <select id="plot-select">
-      <!-- Edit this list to match your actual categories / filenames -->
-      <option value="all">All listing types (aggregate)</option>
-      <option value="tenure_track">US Academic, Tenure-track</option>
-      <option value ="part_time_adjunct">US, Part-time/Adjunct</option>
-      <option value="visiting_temporary">US, Visiting/Temporary</option>
-      <option value="int_tenure_track">Intl, Tenure-track</option>
-      <option value="int_part_time_adjunct">Intl, Part-time/Adjunct</option>
-      <option value="int_visiting_temporary">Intl, Visiting/Temporary</option>
-      <option value="full_time_nonacad">Full-time non-academic</option>
-      <option value="other_nonacad">Other non-academic</option>
-
-    </select>
-  </div>
-
-  <div class="card">
-    <img id="plot-img" src="plots/cumul_postings.png" alt="Cumulative postings plot">
-    <div class="meta">
-      <span id="current-label">All job types (aggregate)</span>
-      <span id="last-updated"></span>
+  <main>
+    <h2 class="section-label">View</h2>
+    <div class="controls">
+      <label for="plot-select">Listing type:</label>
+      <select id="plot-select">
+        <option value="all">All listing types (aggregate)</option>
+        <option value="tenure_track">US Academic, Tenure-track</option>
+        <option value="part_time_adjunct">US, Part-time/Adjunct</option>
+        <option value="visiting_temporary">US, Visiting/Temporary</option>
+        <option value="int_tenure_track">Intl, Tenure-track</option>
+        <option value="int_part_time_adjunct">Intl, Part-time/Adjunct</option>
+        <option value="int_visiting_temporary">Intl, Visiting/Temporary</option>
+        <option value="full_time_nonacad">Full-time non-academic</option>
+        <option value="other_nonacad">Other non-academic</option>
+      </select>
     </div>
-  </div>
+
+    <div class="card">
+      <img id="plot-img" src="plots/cumul_postings.png" alt="Cumulative postings plot">
+      <div class="meta">
+        <span id="current-label">All listing types (aggregate)</span>
+        <span id="last-updated"></span>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Data from the AEA JOE listings board. &middot; <a href="../index.html">John Higgins</a></p>
+  </footer>
 </div>
 
 <script>
@@ -124,13 +254,13 @@
   const plotMap = {
     all: { file: "plots/cumul_postings.png", label: "All listing types (aggregate)" },
     tenure_track: { file: "plots/cumul_us_full_time_academic_permanent_tenure_track_or_tenured.png", label: "US Academic, Tenure-track" },
-    part_time_adjunct: {file:"plots/cumul_us_other_academic_part_time_or_adjunct.png", label:"US Academic, part time/adjunct"},
-    visiting_temporary: {file:"plots/cumul_us_other_academic_visiting_or_temporary.png", label:"US Academic, visiting/temporary"},
+    part_time_adjunct: { file: "plots/cumul_us_other_academic_part_time_or_adjunct.png", label: "US Academic, part time/adjunct" },
+    visiting_temporary: { file: "plots/cumul_us_other_academic_visiting_or_temporary.png", label: "US Academic, visiting/temporary" },
     int_tenure_track: { file: "plots/cumul_international_full_time_academic_permanent_tenure_track_or_tenured.png", label: "International Academic, Tenure-track" },
-    int_part_time_adjunct: {file:"plots/cumul_international_other_academic_part_time_or_adjunct.png", label:"International Academic, part time/adjunct"},
-    int_visiting_temporary: {file:"plots/cumul_international_other_academic_visiting_or_temporary.png", label:"International Academic, visiting/temporary"},
-    full_time_nonacad: {file:"plots/cumul_full_time_nonacademic.png",label:"Full time non-academic"},
-    other_nonacad: {file:"plots/cumul_other_nonacademic_temporary_part_time_non_salaried_consulting_etc.png", label:"Other non-academic"}
+    int_part_time_adjunct: { file: "plots/cumul_international_other_academic_part_time_or_adjunct.png", label: "International Academic, part time/adjunct" },
+    int_visiting_temporary: { file: "plots/cumul_international_other_academic_visiting_or_temporary.png", label: "International Academic, visiting/temporary" },
+    full_time_nonacad: { file: "plots/cumul_full_time_nonacademic.png", label: "Full time non-academic" },
+    other_nonacad: { file: "plots/cumul_other_nonacademic_temporary_part_time_non_salaried_consulting_etc.png", label: "Other non-academic" }
   };
 
   const select = document.getElementById("plot-select");
@@ -140,7 +270,6 @@
   function updatePlot(key) {
     const entry = plotMap[key];
     if (!entry) return;
-    // Cache-bust so browsers don't show a stale image after each auto-update
     img.src = entry.file + "?v=" + Date.now();
     img.alt = entry.label;
     currentLabel.textContent = entry.label;
@@ -149,8 +278,6 @@
   select.addEventListener("change", (e) => updatePlot(e.target.value));
   updatePlot(select.value);
 
-  // Optional: show when the page content was last built (see generate_plots.R,
-  // which can write this file alongside the images).
   fetch("plots/last_updated.txt?v=" + Date.now())
     .then(r => r.ok ? r.text() : null)
     .then(text => {
