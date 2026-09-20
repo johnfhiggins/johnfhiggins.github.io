@@ -46,7 +46,7 @@ jobs:
         run: |
           # 1. Generate a single unique hash for this entire build run
           HASH=$(date +%s)
-          
+          shopt -s extglob
           # 2. Loop through all files matching the prefix inside the images folder
           for filepath in joe-listings/plots/*.@(png|txt); do
             
