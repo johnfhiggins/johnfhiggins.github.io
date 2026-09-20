@@ -41,6 +41,39 @@ jobs:
 
       - name: Run scrape + plot generation
         run: Rscript R/generate_plots.R
+      
+      - name: Hash dynamic images to bypass GitHub Cache
+        run: |
+          # 1. Generate a single unique hash for this entire build run
+          HASH=$(date +%s)
+          
+          # 2. Loop through all files matching the prefix inside the images folder
+          for filepath in joe-listings/plots/*.@(png|txt); do
+            
+            # Make sure it's actually a file, not a directory
+            [ -f "$filepath" ] || break
+            
+            # Extract filename
+            filename=$(basename "$filepath")
+            
+            # Extract extension
+            ext="${filename##*.}"
+            
+            # Extract base name without extension (e.g., updated-banner)
+            basename="${filename%.*}"
+            
+            # Define the new hashed filename (e.g., updated-banner-1726848000.png)
+            new_filename="${basename}-${HASH}.${ext}"
+            new_filepath="joe-listings/plots/${new_filename}"
+            
+            # Rename the file on disk
+            mv "$filepath" "$new_filepath"
+            
+            # 3. Update all references in your HTML files
+            # This searches for the exact original path and replaces it with the hashed path
+            sed -i "s|joe-listings/plots/${filename}|joe-listings/plots/${new_filename}|g" joe-listings/index.html
+            
+          done
 
       - name: Commit updated plots
         run: |
@@ -58,4 +91,5 @@ jobs:
           grep -oE '<img src="https?://camo.githubusercontent.com/[^"]+' |
           sed -e 's/<img src="//' |
           xargs -I % curl -sX PURGE "%"
-
+     
+     
