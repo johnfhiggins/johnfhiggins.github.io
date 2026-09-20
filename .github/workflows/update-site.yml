@@ -51,7 +51,7 @@ jobs:
             
             filename=$(basename "$filepath")
             ext="${filename##*.}"
-            
+            echo "Asset: $filename"
             # 2. Match only PNG or TXT files that end with a 10-digit Unix timestamp hash
             # Example match: plot-name-1726848000.png
             if [[ "$ext" =~ ^(png|txt)$ ]] && [[ "$filename" =~ -[0-9]{10}\.[a-zA-Z]+$ ]]; then
