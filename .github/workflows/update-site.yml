@@ -96,6 +96,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add joe-listings
           git add joe-listings/plots
           git add joe-listings/data
           git diff --quiet --cached || git commit -m "Auto-update JOE plots [skip ci]"
