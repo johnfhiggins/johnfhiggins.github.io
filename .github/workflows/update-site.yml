@@ -72,7 +72,7 @@ jobs:
             
             # Extract filename
             filename=$(basename "$filepath")
-            
+            echo "File: $filename"
             # Extract extension
             ext="${filename##*.}"
             
