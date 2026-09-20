@@ -82,6 +82,7 @@ jobs:
             # Define the new hashed filename (e.g., updated-banner-1726848000.png)
             new_filename="${basename}-${HASH}.${ext}"
             new_filepath="joe-listings/plots/${new_filename}"
+            new_filepath_rel="plots/${new_filename}"
             
             # Rename the file on disk
             mv "$filepath" "$new_filepath"
@@ -89,7 +90,7 @@ jobs:
             echo "Looking in HTML for: joe-listings/plots/$filename"
             
             # Run a grep to see if that string actually exists in index.html before we replace it
-            if grep -q "joe-listings/plots/${filename}" joe-listings/index.html; then
+            if grep -q "plots/${filename}" joe-listings/index.html; then
               echo "  -> SUCCESS: Found matching string in index.html"
             else
               echo "  -> WARNING: Could not find 'joe-listings/plots/${filename}' in index.html!"
