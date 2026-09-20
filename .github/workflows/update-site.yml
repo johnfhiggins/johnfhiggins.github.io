@@ -41,7 +41,24 @@ jobs:
 
       - name: Run scrape + plot generation
         run: Rscript R/generate_plots.R
-      
+      - name: Clean up old hashed plots from previous builds
+        run: |
+          # 1. Loop through all files in the target directory
+          for filepath in joe-listings/plots/*; do
+            shopt -s extglob
+            # Ensure it is a file, not a directory
+            [ -f "$filepath" ] || continue
+            
+            filename=$(basename "$filepath")
+            ext="${filename##*.}"
+            
+            # 2. Match only PNG or TXT files that end with a 10-digit Unix timestamp hash
+            # Example match: plot-name-1726848000.png
+            if [[ "$ext" =~ ^(png|txt)$ ]] && [[ "$filename" =~ -[0-9]{10}\.[a-zA-Z]+$ ]]; then
+              echo "Deleting stale hashed asset: $filename"
+              rm "$filepath"
+            fi
+          done
       - name: Hash dynamic images to bypass GitHub Cache
         run: |
           # 1. Generate a single unique hash for this entire build run
