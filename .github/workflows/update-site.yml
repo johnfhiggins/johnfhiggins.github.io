@@ -99,7 +99,7 @@ jobs:
 
             # 3. Update all references in your HTML files
             # This searches for the exact original path and replaces it with the hashed path
-            sed -i "s|joe-listings/plots/${filename}|joe-listings/plots/${new_filename}|g" joe-listings/index.html
+            sed -i "s|plots/${filename}|plots/${new_filename}|g" joe-listings/index.html
             
           done
 
