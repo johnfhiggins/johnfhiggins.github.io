@@ -63,6 +63,7 @@ jobs:
         run: |
           # 1. Generate a single unique hash for this entire build run
           HASH=$(date +%s)
+          echo "Current hash: $HASH"
           shopt -s extglob
           # 2. Loop through all files matching the prefix inside the images folder
           for filepath in joe-listings/plots/*.@(png|txt); do
@@ -90,7 +91,7 @@ jobs:
           done
           
           sed -i "s/cumul_postings-[0-9]*\.png/cumul_postings-${HASH}.png/" joe-listings/index.html
-
+          echo "Now $HASH"
           sed -i "s/const uq_hash = \"[0-9]*\";/const uq_hash = \"${HASH}\";/" joe-listings/index.html
           
 
