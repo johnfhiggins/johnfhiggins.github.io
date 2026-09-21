@@ -4,7 +4,7 @@ on:
   schedule:
     # Runs every 4 hours
     - cron: "30 */4 * * *"
-  workflow_dispatch: 
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -13,10 +13,19 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -41,75 +50,57 @@ jobs:
 
       - name: Run scrape + plot generation
         run: Rscript R/generate_plots.R
+
       - name: Clean up old hashed plots from previous builds
         run: |
-          # 1. Loop through all files in the target directory
           for filepath in joe-listings/plots/*; do
             shopt -s extglob
-            # Ensure it is a file, not a directory
             [ -f "$filepath" ] || continue
-            
             filename=$(basename "$filepath")
             ext="${filename##*.}"
             echo "Asset: $filename"
-            # 2. Match only PNG or TXT files that end with a 10-digit Unix timestamp hash
-            # Example match: plot-name-1726848000.png
             if [[ "$ext" =~ ^(png|txt)$ ]] && [[ "$filename" =~ -[0-9]{10}\.[a-zA-Z]+$ ]]; then
               echo "Deleting stale hashed asset: $filename"
               rm "$filepath"
             fi
           done
+
       - name: Hash dynamic images to bypass GitHub Cache
         run: |
-          # 1. Generate a single unique hash for this entire build run
           HASH=$(date +%s)
           echo "Current hash: $HASH"
           shopt -s extglob
-          # 2. Loop through all files matching the prefix inside the images folder
           for filepath in joe-listings/plots/*.@(png|txt); do
-            
-            # Make sure it's actually a file, not a directory
             [ -f "$filepath" ] || break
-            
-            # Extract filename
             filename=$(basename "$filepath")
             echo "File: $filename"
-            # Extract extension
             ext="${filename##*.}"
-            
-            # Extract base name without extension (e.g., updated-banner)
             basename="${filename%.*}"
-            
-            # Define the new hashed filename (e.g., updated-banner-1726848000.png)
             new_filename="${basename}-${HASH}.${ext}"
             new_filepath="joe-listings/plots/${new_filename}"
-            new_filepath_rel="plots/${new_filename}"
-            
-            # Rename the file on disk
             mv "$filepath" "$new_filepath"
-            
           done
-          
+
           sed -i "s/cumul_postings-[0-9]*\.png/cumul_postings-${HASH}.png/" joe-listings/index.html
-          echo "Now $HASH"
           sed -i "s/const uq_hash = \"[0-9]*\";/const uq_hash = \"${HASH}\";/" joe-listings/index.html
-          
+          echo "Now $HASH"
 
       - name: Commit updated plots
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add joe-listings
-          git add joe-listings/plots
-          git add joe-listings/data
           git diff --quiet --cached || git commit -m "Auto-update JOE plots [skip ci]"
           git push
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
-      - name: purge
-        run: |
-          curl -sL "https://github.com/${GITHUB_REPOSITORY}" |
-          grep -oE '<img src="https?://camo.githubusercontent.com/[^"]+' |
-          sed -e 's/<img src="//' |
-          xargs -I % curl -sX PURGE "%"
-     
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."   # adjust if your Pages source is a subfolder, e.g. "docs"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
