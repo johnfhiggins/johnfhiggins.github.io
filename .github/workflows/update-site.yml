@@ -89,7 +89,7 @@ jobs:
             
           done
           
-          sed -i "s/cumul_postings-[0-9]*\.png/cumul_postings-${PLOT_HASH}.png/" joe-listings/index.html
+          sed -i "s/cumul_postings-[0-9]*\.png/cumul_postings-${HASH}.png/" joe-listings/index.html
 
           sed -i "s/const uq_hash = \"[0-9]*\";/const uq_hash = \"${HASH}\";/" joe-listings/index.html
           
