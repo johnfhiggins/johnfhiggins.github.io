@@ -86,23 +86,10 @@ jobs:
             
             # Rename the file on disk
             mv "$filepath" "$new_filepath"
-            echo "Processing file: $filename"
-            echo "Looking in HTML for: joe-listings/plots/$filename"
-            
-            # Run a grep to see if that string actually exists in index.html before we replace it
-            if grep -q "plots/${filename}" joe-listings/index.html; then
-              echo "  -> SUCCESS: Found matching string in index.html"
-            else
-              echo "  -> WARNING: Could not find 'joe-listings/plots/${filename}' in index.html!"
-              echo "  -> Sample of what's inside HTML near image references:"
-              grep -i "plots" joe-listings/index.html | head -n 3 || echo "     No instances of 'plots' found in file."
-            fi
-
-            # 3. Update all references in your HTML files
-            # This searches for the exact original path and replaces it with the hashed path
-            sed -i "s|plots/${filename}|plots/${new_filename}|g" joe-listings/index.html
             
           done
+          sed -i "s/const uq_hash = \"[0-9]*\";/const uq_hash = \"${HASH}\";/" joe-listings/index.html
+          
 
       - name: Commit updated plots
         run: |
