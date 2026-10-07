@@ -55,7 +55,7 @@ ggsave(
 full_data_cumul_type <- full_data[,.N, by=c("joe_issue_ID","day_of_cycle","jp_section")][order(day_of_cycle)][,N_cumul := cumsum(N), by=c("joe_issue_ID","jp_section")]
 full_data_cumul_type[,`Cycle Year` := as.factor(str_split_i(joe_issue_ID, "-",1))]
 full_data_cumul_type[,current_yr := joe_issue_ID =="2026-02"]
-cutoff <- 100
+
 
 sections <- unique(full_data_cumul_type$jp_section)
 job_type_files <- lapply(sections, to_any_case, case="snake")
