@@ -37,7 +37,7 @@ full_data_cumul[,current_yr := joe_issue_ID =="2026-02"]
 full_data_cumul[,`Cycle Year` := as.factor(str_split_i(joe_issue_ID, "-",1))]
 
 
-cutoff <- min(max(full_data_cumul[current_yr==1]$day_of_cycle)+50, 100)
+cutoff <- max(max(full_data_cumul[current_yr==1]$day_of_cycle)+50, 100)
 
 g <- ggplot() + geom_step(data=full_data_cumul[current_yr==0 & day_of_cycle < cutoff ], aes(x=day_of_cycle, y=N_cumul, col=`Cycle Year`),alpha=0.5, linetype=2) + 
   geom_step(data=full_data_cumul[current_yr==1 & day_of_cycle < cutoff ], aes(x=day_of_cycle, y=N_cumul, col=`Cycle Year`), alpha=1)  + theme_bw(base_family = "sans")+
